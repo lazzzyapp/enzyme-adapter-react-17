@@ -19,7 +19,6 @@ import { fakeDynamicImport } from '@wojtekmaj/enzyme-adapter-utils';
 
 import './_helpers/setupAdapters';
 import {
-  createClass,
   createContext,
   createPortal,
   forwardRef,
@@ -391,15 +390,16 @@ describe('shallow', () => {
 
   describe('context', () => {
     it('can pass in context', () => {
-      const SimpleComponent = createClass({
-        contextTypes: {
-          name: PropTypes.string,
-        },
+      class SimpleComponent extends React.Component {
         render() {
           const { name } = this.context;
           return <div>{name}</div>;
-        },
-      });
+        }
+      }
+
+      SimpleComponent.contextTypes = {
+        name: PropTypes.string,
+      };
 
       const context = { name: 'foo' };
       const wrapper = shallow(<SimpleComponent />, { context });
@@ -407,27 +407,28 @@ describe('shallow', () => {
     });
 
     it('does not throw if context is passed in but contextTypes is missing', () => {
-      const SimpleComponent = createClass({
+      class SimpleComponent extends React.Component {
         render() {
           const { name } = this.context;
           return <div>{name}</div>;
-        },
-      });
+        }
+      }
 
       const context = { name: 'foo' };
       expect(() => shallow(<SimpleComponent />, { context })).not.to.throw();
     });
 
     it('is introspectable through context API', () => {
-      const SimpleComponent = createClass({
-        contextTypes: {
-          name: PropTypes.string,
-        },
+      class SimpleComponent extends React.Component {
         render() {
           const { name } = this.context;
           return <div>{name}</div>;
-        },
-      });
+        }
+      }
+
+      SimpleComponent.contextTypes = {
+        name: PropTypes.string,
+      };
 
       const context = { name: 'foo' };
       const wrapper = shallow(<SimpleComponent />, { context });

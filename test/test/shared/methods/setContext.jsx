@@ -3,25 +3,22 @@ import PropTypes from 'prop-types';
 import { expect } from 'chai';
 import sinon from 'sinon-sandbox';
 
-import {
-  createClass,
-} from '../../_helpers/react-compat';
-
 export default function describeSetContext({
   Wrap,
   WrapperName,
   isShallow,
 }) {
   describe('.setContext(newContext)', () => {
-    const SimpleComponent = createClass({
-      contextTypes: {
-        name: PropTypes.string,
-      },
+    class SimpleComponent extends React.Component {
       render() {
         const { name } = this.context;
         return <div>{name}</div>;
-      },
-    });
+      }
+    }
+
+    SimpleComponent.contextTypes = {
+      name: PropTypes.string,
+    };
 
     it('sets context for a component multiple times', () => {
       const context = { name: 'foo' };

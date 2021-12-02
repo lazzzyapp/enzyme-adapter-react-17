@@ -6,10 +6,6 @@ import {
   itIf,
 } from '../../_helpers';
 
-import {
-  createClass,
-} from '../../_helpers/react-compat';
-
 export default function describeContext({
   Wrap,
   WrapperName,
@@ -19,13 +15,13 @@ export default function describeContext({
     const contextTypes = {
       name: PropTypes.string,
     };
-    const SimpleComponent = createClass({
-      contextTypes,
+    class SimpleComponent extends React.Component {
       render() {
         const { name } = this.context;
         return <div>{name}</div>;
-      },
-    });
+      }
+    }
+    SimpleComponent.contextTypes = contextTypes;
 
     function SimpleComponentSFC(props, { name }) {
       return <div>{name}</div>;

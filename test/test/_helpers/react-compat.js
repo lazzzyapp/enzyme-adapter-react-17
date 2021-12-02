@@ -2,7 +2,6 @@
 
 const { createFactory } = require('react');
 
-let createClass;
 let renderToString;
 let createPortal;
 let createContext;
@@ -29,8 +28,6 @@ let useReducer;
 let useRef;
 let useState;
 let act;
-
-createClass = require('create-react-class');
 
 ({ renderToString } = require('react-dom/server'));
 
@@ -82,7 +79,6 @@ createClass = require('create-react-class');
 } = require('react-dom/test-utils'));
 
 export {
-  createClass,
   createFactory,
   renderToString,
   createPortal,

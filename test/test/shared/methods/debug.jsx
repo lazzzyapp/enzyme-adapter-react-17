@@ -8,7 +8,6 @@ import { debugNodes } from 'enzyme/build/Debug';
 import { is } from '../../_helpers/version';
 
 import {
-  createClass,
   memo,
   useCallback,
 } from '../../_helpers/react-compat';
@@ -24,22 +23,6 @@ export default function describeDebug({
         const wrapper = Wrap(<div />);
 
         expect(wrapper.debug()).to.equal('<div />');
-        expect(wrapper.debug()).to.equal(debugNodes(wrapper.getNodesInternal()));
-      });
-
-      it('with wrapping a createClass component', () => {
-        const Foo = createClass({
-          displayName: 'Bar',
-          render() { return <div />; },
-        });
-        const wrapper = Wrap(<Foo />);
-
-        const expectedDebug = isShallow
-          ? '<div />'
-          : `<Bar>
-  <div />
-</Bar>`;
-        expect(wrapper.debug()).to.equal(expectedDebug);
         expect(wrapper.debug()).to.equal(debugNodes(wrapper.getNodesInternal()));
       });
 

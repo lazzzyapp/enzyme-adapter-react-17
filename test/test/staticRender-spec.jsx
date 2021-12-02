@@ -6,7 +6,7 @@ import renderEntry from 'enzyme/render';
 import { fakeDynamicImport } from '@wojtekmaj/enzyme-adapter-utils';
 
 import './_helpers/setupAdapters';
-import { createClass, lazy } from './_helpers/react-compat';
+import { lazy } from './_helpers/react-compat';
 
 describe('render', () => {
   describe('top level entry points', () => {
@@ -15,15 +15,16 @@ describe('render', () => {
 
   describe('context', () => {
     it('can pass in context', () => {
-      const SimpleComponent = createClass({
-        contextTypes: {
-          name: PropTypes.string,
-        },
+      class SimpleComponent extends React.Component {
         render() {
           const { name } = this.context;
           return <div>{name}</div>;
-        },
-      });
+        }
+      }
+
+      SimpleComponent.contextTypes = {
+        name: PropTypes.string,
+      };
 
       const context = { name: 'foo' };
       const wrapper = render(<SimpleComponent />, { context });
@@ -36,20 +37,22 @@ describe('render', () => {
     });
 
     it('can pass context to the child of mounted component', () => {
-      const SimpleComponent = createClass({
-        contextTypes: {
-          name: PropTypes.string,
-        },
+      class SimpleComponent extends React.Component {
         render() {
           const { name } = this.context;
           return <span>{name}</span>;
-        },
-      });
-      const ComplexComponent = createClass({
+        }
+      }
+
+      SimpleComponent.contextTypes = {
+        name: PropTypes.string,
+      };
+
+      class ComplexComponent extends React.Component {
         render() {
           return <div><SimpleComponent /></div>;
-        },
-      });
+        }
+      }
 
       const childContextTypes = {
         name: PropTypes.string.isRequired,
@@ -71,12 +74,12 @@ describe('render', () => {
     });
 
     it('does not throw if context is passed in but contextTypes is missing', () => {
-      const SimpleComponent = createClass({
+      class SimpleComponent extends React.Component {
         render() {
           const { name } = this.context;
           return <div>{name}</div>;
-        },
-      });
+        }
+      }
 
       const context = { name: 'foo' };
       expect(() => render(<SimpleComponent />, { context })).not.to.throw();
@@ -85,11 +88,11 @@ describe('render', () => {
 
   describe('rendering non-elements', () => {
     it('can render strings', () => {
-      const StringComponent = createClass({
+      class StringComponent extends React.Component {
         render() {
           return 'foo';
-        },
-      });
+        }
+      }
 
       const getWrapper = (options) => render(<StringComponent />, options);
       expect(getWrapper).to.not.throw();
@@ -102,11 +105,11 @@ describe('render', () => {
     });
 
     it('can render numbers', () => {
-      const NumberComponent = createClass({
+      class NumberComponent extends React.Component {
         render() {
           return 42;
-        },
-      });
+        }
+      }
 
       const getWrapper = (options) => render(<NumberComponent />, options);
       expect(getWrapper).to.not.throw();

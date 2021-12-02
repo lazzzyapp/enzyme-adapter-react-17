@@ -5,10 +5,6 @@ import {
   itIf,
 } from '../../_helpers';
 
-import {
-  createClass,
-} from '../../_helpers/react-compat';
-
 export default function describeParent({
   Wrap,
   isShallow,
@@ -67,11 +63,11 @@ export default function describeParent({
     });
 
     itIf(isShallow, 'works with component', () => {
-      const Foo = createClass({
+      class Foo extends React.Component {
         render() {
           return <div className="bar" />;
-        },
-      });
+        }
+      }
       const wrapper = Wrap(<Foo />);
       expect(wrapper.find('.bar')).to.have.lengthOf(1);
       expect(wrapper.find('.bar').parent()).to.have.lengthOf(0);
@@ -79,11 +75,11 @@ export default function describeParent({
     });
 
     itIf(!isShallow, 'works with component', () => {
-      const Foo = createClass({
+      class Foo extends React.Component {
         render() {
           return <div className="bar" />;
-        },
-      });
+        }
+      }
       const wrapper = Wrap(<Foo />);
       expect(wrapper.find('.bar')).to.have.lengthOf(1);
       expect(wrapper.find('.bar').parent()).to.have.lengthOf(1);

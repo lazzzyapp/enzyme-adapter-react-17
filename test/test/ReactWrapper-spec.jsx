@@ -17,7 +17,6 @@ import { fakeDynamicImport } from '@wojtekmaj/enzyme-adapter-utils';
 
 import './_helpers/setupAdapters';
 import {
-  createClass,
   createContext,
   createPortal,
   createRef,
@@ -411,15 +410,16 @@ describe('mount', () => {
 
   describe('context', () => {
     it('can pass in context', () => {
-      const SimpleComponent = createClass({
-        contextTypes: {
-          name: PropTypes.string,
-        },
+      class SimpleComponent extends React.Component {
         render() {
           const { name } = this.context;
           return <div>{name}</div>;
-        },
-      });
+        }
+      }
+
+      SimpleComponent.contextTypes = {
+        name: PropTypes.string,
+      };
 
       const context = { name: 'foo' };
       const wrapper = mount(<SimpleComponent />, { context });
@@ -427,20 +427,22 @@ describe('mount', () => {
     });
 
     it('can pass context to the child of mounted component', () => {
-      const SimpleComponent = createClass({
-        contextTypes: {
-          name: PropTypes.string,
-        },
+      class SimpleComponent extends React.Component {
         render() {
           const { name } = this.context;
           return <div>{name}</div>;
-        },
-      });
-      const ComplexComponent = createClass({
+        }
+      }
+
+      SimpleComponent.contextTypes = {
+        name: PropTypes.string,
+      };
+
+      class ComplexComponent extends React.Component {
         render() {
           return <div><SimpleComponent /></div>;
-        },
-      });
+        }
+      }
 
       const childContextTypes = {
         name: PropTypes.string.isRequired,
@@ -451,12 +453,13 @@ describe('mount', () => {
     });
 
     describe('does not attempt to mutate Component.childContextTypes', () => {
-      const SimpleComponent = createClass({
-        displayName: 'Simple',
+      class SimpleComponent extends React.Component {
         render() {
           return <div />;
-        },
-      });
+        }
+      }
+
+      SimpleComponent.displayName = 'Simple';
 
       class ClassComponent extends React.Component {
         render() {
@@ -471,14 +474,8 @@ describe('mount', () => {
       }
       ClassComponent.contextTypes = Object.freeze({ a: PropTypes.string });
 
-      const CreateClassComponent = createClass({
-        contextTypes: ClassComponent.contextTypes,
-        render: ClassComponent.prototype.render,
-      });
-
       it('works without options', () => {
         expect(() => mount(<ClassComponent />)).not.to.throw();
-        expect(() => mount(<CreateClassComponent />)).not.to.throw();
       });
 
       it('works with a childContextTypes option', () => {
@@ -487,32 +484,32 @@ describe('mount', () => {
           context: { a: 'hello', b: 'world' },
         };
         expect(() => mount(<ClassComponent />, options)).not.to.throw();
-        expect(() => mount(<CreateClassComponent />, options)).not.to.throw();
       });
     });
 
     it('does not throw if context is passed in but contextTypes is missing', () => {
-      const SimpleComponent = createClass({
+      class SimpleComponent extends React.Component {
         render() {
           const { name } = this.context;
           return <div>{name}</div>;
-        },
-      });
+        }
+      }
 
       const context = { name: 'foo' };
       expect(() => mount(<SimpleComponent />, { context })).not.to.throw();
     });
 
     it('is introspectable through context API', () => {
-      const SimpleComponent = createClass({
-        contextTypes: {
-          name: PropTypes.string,
-        },
+      class SimpleComponent extends React.Component {
         render() {
           const { name } = this.context;
           return <div>{name}</div>;
-        },
-      });
+        }
+      }
+
+      SimpleComponent.contextTypes = {
+        name: PropTypes.string,
+      };
 
       const context = { name: 'foo' };
       const wrapper = mount(<SimpleComponent />, { context });

@@ -5,10 +5,6 @@ import {
   itIf,
 } from '../../_helpers';
 
-import {
-  createClass,
-} from '../../_helpers/react-compat';
-
 export default function describeParents({
   Wrap,
   isShallow,
@@ -120,11 +116,11 @@ export default function describeParents({
     });
 
     itIf(!isShallow, 'works with components in the tree', () => {
-      const Foo = createClass({
+      class Foo extends React.Component {
         render() {
           return <div className="bar" />;
-        },
-      });
+        }
+      }
       const wrapper = Wrap((
         <div className="root">
           <Foo />

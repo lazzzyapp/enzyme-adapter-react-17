@@ -5,10 +5,6 @@ import sinon from 'sinon-sandbox';
 
 import getAdapter from 'enzyme/build/getAdapter';
 
-import {
-  createClass,
-} from '../../_helpers/react-compat';
-
 export default function describeName({
   Wrap,
   WrapRendered,
@@ -42,25 +38,6 @@ export default function describeName({
             SFC.displayName = 'CustomWrapper';
 
             const wrapper = WrapRendered(<SFCWrapper />);
-            expect(wrapper.name()).to.equal('CustomWrapper');
-          });
-        });
-
-        describe('createClass', () => {
-          it('returns the name of the node', () => {
-            const Foo = createClass({
-              displayName: 'CustomWrapper',
-              render() {
-                return <div />;
-              },
-            });
-            const FooWrapper = createClass({
-              render() {
-                return <Foo />;
-              },
-            });
-
-            const wrapper = WrapRendered(<FooWrapper />);
             expect(wrapper.name()).to.equal('CustomWrapper');
           });
         });

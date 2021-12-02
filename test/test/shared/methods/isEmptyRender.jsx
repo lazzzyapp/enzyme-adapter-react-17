@@ -6,10 +6,6 @@ import {
   generateEmptyRenderData,
 } from '../../_helpers';
 
-import {
-  createClass,
-} from '../../_helpers/react-compat';
-
 export default function describeIsEmptyRender({
   Wrap,
   WrapRendered,
@@ -30,16 +26,6 @@ export default function describeIsEmptyRender({
     }
 
     const emptyRenderValues = generateEmptyRenderData();
-
-    itWithData(emptyRenderValues, 'when a React createClass component returns: ', (data) => {
-      const Foo = createClass({
-        render() {
-          return data.value;
-        },
-      });
-      const wrapper = Wrap(<Foo />);
-      expect(wrapper.isEmptyRender()).to.equal(data.expectResponse);
-    });
 
     itWithData(emptyRenderValues, 'when an ES2015 class component returns: ', (data) => {
       class Foo extends React.Component {
